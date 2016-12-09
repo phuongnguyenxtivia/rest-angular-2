@@ -17,6 +17,8 @@ If all of the steps above have been successfully executed you should now have ac
 - CRUD actions for Book Rest Api
 - Form validation
 - Routing for SPA
+### How to use
+Go to `output` folder, copy 2 jar put in deploy
 
 ### TO-DO list
 - [ ] Display returned message (it can display any hard-code messages but json messages)
