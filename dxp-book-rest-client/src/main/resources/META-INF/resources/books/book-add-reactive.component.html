@@ -1,0 +1,43 @@
+<div class="container">
+	<h2>Data Driven (Reactive) Form - Add New Book</h2>
+
+	<form [formGroup]="form" (ngSubmit)="submitForm(form.value)"  *ngIf="active">
+	  	<div class="row">
+			<div class="form-group">
+				<label for="isbn">ISBN</label>
+				<input type="text" id="isbn" class="form-control" formControlName="isbn" >
+		    </div>
+	  	</div>
+	  	<div class="row">
+			<div class="form-group">
+				<label for="title">Title</label>
+				<input type="text" id="title" class="form-control" formControlName="title" >
+				<div *ngIf="formErrors.title" class="alert alert-danger">
+          			{{ formErrors.title }}
+        		</div>
+		    </div>
+	  	</div>
+	  	<div class="row">
+			<div class="form-group">
+				<label for="author">Author</label>
+				<input type="text" id="author" class="form-control" formControlName="author" >
+				<div *ngIf="formErrors.author" class="alert alert-danger">
+          			{{ formErrors.author }}
+        		</div>
+		    </div>
+	  	</div>
+	  	<div class="row">
+			<div class="form-group">
+				<label for="summary">Summary</label>
+				<input type="text" id="summary" class="form-control" formControlName="summary" >
+		    </div>
+	  	</div>
+
+		<div class="row">
+			<div class="form-group">
+				<button type="button" class="btn btn-link" (click)="goToBookList()">Back</button>
+				<button type="submit" class="btn btn-default" [disabled]="!form.valid">Submit</button>
+			</div>
+	    </div>
+    </form>  	  	
+</div>
