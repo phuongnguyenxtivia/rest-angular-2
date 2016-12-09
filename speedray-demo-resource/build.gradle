@@ -1,0 +1,98 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath 'org.dm.gradle:gradle-bundle-plugin:0.8.5', 'net.ltgt.gradle:gradle-apt-plugin:0.9'
+    }
+}
+
+repositories {
+	mavenLocal()
+    jcenter()
+	maven {
+		url "http://cdn.repository.liferay.com/nexus/content/groups/public"
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'org.dm.bundle'
+apply plugin: 'net.ltgt.apt'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java','src/gen/java']
+        }
+    }
+}
+
+dependencies {
+
+	compileOnly 'com.liferay.portal:com.liferay.portal.kernel:2.0.0',
+        'com.liferay:com.liferay.portal.configuration.metatype:2.0.0',
+	    'javax.ws.rs:javax.ws.rs-api:2.0.1',
+	    'javax.portlet:portlet-api:2.0',
+	    'javax.servlet:servlet-api:2.5',
+	    'biz.aQute.bnd:biz.aQute.bndlib:3.1.0',
+	    'org.osgi:org.osgi.compendium:5.0.0',
+        'io.swagger:swagger-annotations:1.5.9',
+        'com.xtivia.tools:sgdxp:1.0.0'
+
+    compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:'+jackson_version,
+        'org.apache.httpcomponents:httpclient:4.5.2',
+        'org.apache.commons:commons-lang3:3.4',
+        'org.mapstruct:mapstruct-jdk8:1.0.0.Final'
+
+    apt 'org.mapstruct:mapstruct-processor:1.0.0.Final'
+
+    testCompile 'org.testng:testng:6.3.1', 'org.easytesting:fest-assert:1.4'
+}
+
+/*
+The logic below is used during the bundle task that generates the OSGi JAR. It allows us to 
+automatically include dependencies from the 'compile' configuration (both in terms of packaging
+and classpath) without having to manage continuous updating of a bnd.bnd file
+*/
+def bundleClassPath() {
+    def list = []
+    configurations.compile.each {
+        list += 'OSGI-INF/lib/' + it.name
+    }
+    return list.join(',')
+}
+
+def includeResource() {
+  def list = []
+  configurations.compile.each {
+    list += 'OSGI-INF/lib/' + it.name + "=" + it.path
+  }
+  return list.join(',')
+}
+
+bundle {
+  instructions << [
+    'Bundle-Version'   : '1.0.0',
+    '-metatype'        : '*',
+    '-buildpath'       : 'osgi.annotation; version=6.0.1,osgi.core; version=6.0,osgi.cmpn; version=6.0',
+    'Export-Package'   : 'com.xtivia.rest',
+    'Import-Package'   : '!org.apache.avalon.framework.logger,!org.apache.log,javax.servlet.http,javax.servlet,*',
+    'Bundle-ClassPath' : bundleClassPath(),
+    '-includeresource' : includeResource(),
+    '-wab'             : ''
+  ]
+}
+
+test {
+    useTestNG {
+        preserveOrder true
+    }
+    classpath = classpath.plus(files(project.sourceSets.main.compileClasspath))
+}
