@@ -20,7 +20,7 @@ If all of the steps above have been successfully executed you should now have ac
 
 ### How to use
 - Go to `output` folder, copy 2 JARs and put in deploy
-- Or you can run `blade gw build` and `blade deploy` (in `dxp-book-rest-client`) and run gradle deploy for `speedray-demo-resource` project
+- Or you can run `blade gw build` and `blade deploy` (in `dxp-book-rest-client` folder) and run gradle deploy for `speedray-demo-resource` project
 
 ### TO-DO list
 - [ ] Display returned message (it can display any hard-code messages but json messages)
