@@ -1,0 +1,270 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Liferay DXP JAX RS Services using Xtivia Speedray Publisher
+basePath: /o/rest/samples
+schemes:
+  - http
+paths:
+  /people:
+    get:
+      tags:
+        - /samples
+      summary: Returns the entire collection of in-memory Person objects
+      description: ''
+      operationId: getAllPeople
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Person'
+    post:
+      tags:
+        - /samples
+      summary: >-
+        Creates a new Person object based on suppplied JSON and returns the
+        created object including ID
+      description: ''
+      operationId: addPerson
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: false
+          schema:
+            $ref: '#/definitions/Person'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Person'
+  '/people/{id}':
+    get:
+      tags:
+        - /samples
+      summary: Returns a single Person object based on suppplied ID
+      description: ''
+      operationId: getPerson
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Person'
+    put:
+      tags:
+        - /samples
+      summary: >-
+        Modifies an existing Person object based on suppplied JSON and uses the
+        ID parameter to identify the target person
+      description: ''
+      operationId: updatePerson
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: false
+          schema:
+            $ref: '#/definitions/Person'
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Person'
+    delete:
+      tags:
+        - /samples
+      summary: Removes a single Person object based on suppplied ID
+      description: ''
+      operationId: deletePerson
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Person'
+  /books:
+    get:
+      tags:
+        - /samples
+      summary: Returns the entire collection of in-memory Book objects
+      description: ''
+      operationId: getAllBook
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Book'
+    post:
+      tags:
+        - /samples
+      summary: >-
+        Creates a new Book object based on suppplied JSON and returns the
+        created object including ID
+      description: ''
+      operationId: addBook
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: false
+          schema:
+            $ref: '#/definitions/Book'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Book'
+  '/books/{id}':
+    get:
+      tags:
+        - /samples
+      summary: Returns a single Book object based on suppplied ID
+      description: ''
+      operationId: getBook
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Book'
+    put:
+      tags:
+        - /samples
+      summary: >-
+        Modifies an existing Book object based on suppplied JSON and uses the
+        ID parameter to identify the target person
+      description: ''
+      operationId: updateBook
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: false
+          schema:
+            $ref: '#/definitions/Book'
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Book'
+    delete:
+      tags:
+        - /samples
+      summary: Removes a single Book object based on suppplied ID
+      description: ''
+      operationId: deleteBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Book'          
+  /users/current:
+    get:
+      tags:
+        - /samples
+      summary: >-
+        Returns a simplified JSON representation of Liferay User object for
+        logged in user (or default user if not logged in)
+      description: ''
+      operationId: getCurrentUser
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/LiferayUser'
+definitions:
+  LiferayUser:
+    type: object
+    properties:
+      emailAddress:
+        type: string
+      screenName:
+        type: string
+      id:
+        type: integer
+        format: int64
+      active:
+        type: boolean
+        default: false
+      defaultUser:
+        type: boolean
+        default: false
+  Person:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      lastName:
+        type: string
+      firstName:
+        type: string
+      location:
+        type: string
+  Book:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      author:
+        type: string
+      summary:
+        type: string
